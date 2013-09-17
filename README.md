@@ -15,3 +15,17 @@ _Mysql Workbench plugin_
 * Open "Plugins" / "Utilities" / "Export to Redmine comments"
 * Paste your results from clipboard!
 
+## Example output
+
+    |_. TABLE_TYPE|_. ENGINE|_. VERSION|_. ROW_FORMAT|
+    |BASE TABLE|MyISAM|10|Fixed|
+    |BASE TABLE|MyISAM|10|Dynamic|
+    |BASE TABLE|CSV|10|Dynamic|
+
+    <pre><code class="sql">
+    SELECT DISTINCT TABLE_TYPE, ENGINE, VERSION, ROW_FORMAT
+    FROM INFORMATION_SCHEMA.TABLES
+    WHERE TABLE_SCHEMA = 'mysql'
+    LIMIT 0, 1000
+    </code></pre>
+
