@@ -29,7 +29,13 @@ def exportToRedmine(editor):
     table[0] = _textileRow(table[0])
 
     hasRows = rs.goToFirstRow()
+    lastRow = rs.rowCount
+    if isinstance(rs, grt.classes.db_query_EditableResultset):
+        lastRow -= 1
+
     while hasRows:
+        if rs.currentRow == lastRow:
+            break
         row = []
         for column in rs.columns:
             row.append(rs.stringFieldValueByName(column.name))
@@ -54,8 +60,12 @@ def _textileHeader(cell):
     return '_. ' + cell
 
 def _textileRow(row):
-    return '|' . join([''] + row + [''])
+    sRow = ['']
+    for cell in row:
+        sRow.append(str(cell))
+    sRow.append('')
+    return '|' . join(sRow)
 
 # debug
-# exportToRedmine(grt.root.wb.sqlEditors[0].queryEditors[0])
+# exportToRedmine(grt.root.wb.sqlEditors[0])
 
