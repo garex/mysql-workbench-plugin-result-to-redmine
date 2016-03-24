@@ -3,7 +3,7 @@ import grt
 import mforms
 import re
 
-ModuleInfo = DefineModule(name= "Exporter", author= "Alexander Ustimenko", version="1.0")
+ModuleInfo = DefineModule(name= "Exporter", author= "Alexander Ustimenko", version= "1.1")
 
 @ModuleInfo.plugin(
     "wb.sqlide.exportToRedmine",
@@ -14,14 +14,14 @@ ModuleInfo = DefineModule(name= "Exporter", author= "Alexander Ustimenko", versi
 def exportToRedmine(editor):
     """ Exports current query and it's results to clipboard in Redmine comments format
     """
-    
-    if editor.activeQueryEditor.activeResultset == None:
+
+    if editor.activeQueryEditor.activeResultPanel == None:
         status = "No SQL result for export to redmine!"
         print status
         mforms.App.get().set_status_text(status)
         return 1
 
-    rs = editor.activeQueryEditor.activeResultset
+    rs = editor.activeQueryEditor.activeResultPanel.resultset
 
     table = [[]]
     for column in rs.columns:
@@ -48,12 +48,12 @@ def exportToRedmine(editor):
         rs.sql.strip(),
         '</code></pre>'
     ])
-    
+
     print output
     mforms.Utilities.set_clipboard_text(output)
     sql = re.sub("\s+", " ", rs.sql.strip())
     mforms.App.get().set_status_text("SQL result exported to redmine: " + sql)
-    
+
     return 0
 
 def _textileHeader(cell):
@@ -66,6 +66,5 @@ def _textileRow(row):
     sRow.append('')
     return '|' . join(sRow)
 
-# debug
+# to debug uncomment next string and press Ctrl + R
 # exportToRedmine(grt.root.wb.sqlEditors[0])
-
